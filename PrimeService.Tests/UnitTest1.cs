@@ -15,7 +15,8 @@ namespace PrimeService.Tests
 
         public DeskBookingRequestProcessorTests()
         {
-            _processor = new DeskBookingRequestProcessor();
+            _deskBookingRepositoryMock = new Mock<IDeskBookingRepository>();
+            _processor = new DeskBookingRequestProcessor(_deskBookingRepositoryMock.Object);
             _request = new DeskBookingRequest
             {
                 FirstName = "Thomas",
@@ -23,7 +24,6 @@ namespace PrimeService.Tests
                 Email = "thomas@thomas.com",
                 Date = new DateTime(2020, 1, 28)
             };
-            _deskBookingRepositoryMock = new Mock<IDeskBookingRepository>();
             
         }
 
@@ -51,7 +51,24 @@ namespace PrimeService.Tests
         [Fact]
         public void ShouldSaveDeskBooking()
         {
+            DeskBooking savedDeskBooking = null;
+            _deskBookingRepositoryMock.Setup(x => x.Save(It.IsAny<DeskBooking>()))
+            
+            .Callback<DeskBooking>(deskbooking => 
+            {
+                savedDeskBooking = deskbooking;
+            });
+
             _processor.BookDesk(_request);
+            _deskBookingRepositoryMock.Verify(x => x.Save(It.IsAny<DeskBooking>()), Times.Once);
+
+            Assert.NotNull(savedDeskBooking);
+
+            Assert.Equal(_request.FirstName, savedDeskBooking.FirstName);
+            Assert.Equal(_request.LastName, savedDeskBooking.LastName);
+            Assert.Equal(_request.Email, savedDeskBooking.Email);
+            Assert.Equal(_request.Date, savedDeskBooking.Date);
+
 
         }
     }
