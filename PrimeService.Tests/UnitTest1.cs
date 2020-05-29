@@ -1,4 +1,6 @@
 using System;
+using PrimeService.Domain;
+using PrimeService.Processor;
 using Xunit;
 
 namespace PrimeService.Tests
