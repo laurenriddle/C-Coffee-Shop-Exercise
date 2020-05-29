@@ -1,47 +1,58 @@
 using System;
+using PrimeService.DataInterface;
 using PrimeService.Domain;
 using PrimeService.Processor;
 using Xunit;
+using Moq;
 
 namespace PrimeService.Tests
 {
     public class DeskBookingRequestProcessorTests
     {
         private DeskBookingRequestProcessor _processor;
+        private DeskBookingRequest _request;
+        private Mock<IDeskBookingRepository> _deskBookingRepositoryMock;
 
         public DeskBookingRequestProcessorTests()
         {
             _processor = new DeskBookingRequestProcessor();
-            
-        }
-
-        [Fact]
-        public void ShouldReturnDeskBookingResultsWithRequestValues()
-        {
-            var request = new DeskBookingRequest
+            _request = new DeskBookingRequest
             {
                 FirstName = "Thomas",
                 LastName = "Huber",
                 Email = "thomas@thomas.com",
                 Date = new DateTime(2020, 1, 28)
             };
-            // var processor = new DeskBookingRequestProcessor();
-            DeskBookingResult result = _processor.BookDesk(request);
+            _deskBookingRepositoryMock = new Mock<IDeskBookingRepository>();
+            
+        }
+
+        [Fact]
+        public void ShouldReturnDeskBookingResultsWithRequestValues()
+        {
+            
+            DeskBookingResult result = _processor.BookDesk(_request);
 
             Assert.NotNull(result);
-            Assert.Equal(request.FirstName, result.FirstName);
-            Assert.Equal(request.LastName, result.LastName);
-            Assert.Equal(request.Email, result.Email);
-            Assert.Equal(request.Date, result.Date);
+            Assert.Equal(_request.FirstName, result.FirstName);
+            Assert.Equal(_request.LastName, result.LastName);
+            Assert.Equal(_request.Email, result.Email);
+            Assert.Equal(_request.Date, result.Date);
         }
         [Fact]
         public void ShouldThrowExceptionIfRequestIsNull()
         {
-            // var processor = new DeskBookingRequestProcessor();
 
             var exception = Assert.Throws<ArgumentNullException>(() => _processor.BookDesk(null));
 
             Assert.Equal("request", exception.ParamName);
+        }
+
+        [Fact]
+        public void ShouldSaveDeskBooking()
+        {
+            _processor.BookDesk(_request);
+
         }
     }
 }
