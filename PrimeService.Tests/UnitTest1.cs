@@ -21,7 +21,7 @@ namespace PrimeService.Tests
             Assert.NotNull(result);
             Assert.Equal(request.FirstName, result.FirstName);
             Assert.Equal(request.LastName, result.LastName);
-            Assert.Equal(request.Email, result.FirstName);
+            Assert.Equal(request.Email, result.Email);
             Assert.Equal(request.Date, result.Date);
         }
     }
