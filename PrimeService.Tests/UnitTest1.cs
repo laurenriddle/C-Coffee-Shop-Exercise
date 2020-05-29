@@ -7,6 +7,14 @@ namespace PrimeService.Tests
 {
     public class DeskBookingRequestProcessorTests
     {
+        private DeskBookingRequestProcessor _processor;
+
+        public DeskBookingRequestProcessorTests()
+        {
+            _processor = new DeskBookingRequestProcessor();
+            
+        }
+
         [Fact]
         public void ShouldReturnDeskBookingResultsWithRequestValues()
         {
@@ -14,11 +22,11 @@ namespace PrimeService.Tests
             {
                 FirstName = "Thomas",
                 LastName = "Huber",
-                Email= "thomas@thomas.com",
+                Email = "thomas@thomas.com",
                 Date = new DateTime(2020, 1, 28)
             };
-            var processor = new DeskBookingRequestProcessor();
-            DeskBookingResult result = processor.BookDesk(request);
+            // var processor = new DeskBookingRequestProcessor();
+            DeskBookingResult result = _processor.BookDesk(request);
 
             Assert.NotNull(result);
             Assert.Equal(request.FirstName, result.FirstName);
@@ -26,5 +34,16 @@ namespace PrimeService.Tests
             Assert.Equal(request.Email, result.Email);
             Assert.Equal(request.Date, result.Date);
         }
+        [Fact]
+        public void ShouldThrowExceptionIfRequestIsNull()
+        {
+            // var processor = new DeskBookingRequestProcessor();
+
+            var exception = Assert.Throws<ArgumentNullException>(() => _processor.BookDesk(null));
+
+            Assert.Equal("request", exception.ParamName);
+        }
     }
 }
+
+
