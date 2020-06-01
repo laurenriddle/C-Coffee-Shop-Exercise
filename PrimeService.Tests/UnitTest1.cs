@@ -5,6 +5,7 @@ using PrimeService.Processor;
 using Xunit;
 using Moq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PrimeService.Tests
 {
@@ -25,7 +26,7 @@ namespace PrimeService.Tests
                 Email = "thomas@thomas.com",
                 Date = new DateTime(2020, 1, 28)
             };
-            _availableDesks = new List<Desk>{ new Desk() };
+            _availableDesks = new List<Desk>{ new Desk { Id = 7 } };
             _deskBookingRepositoryMock = new Mock<IDeskBookingRepository>();
             _deskRepositoryMock = new Mock<IDeskRepository>();
             _deskRepositoryMock.Setup(x => x.GetAvailableDesks(_request.Date)) 
@@ -77,6 +78,7 @@ namespace PrimeService.Tests
             Assert.Equal(_request.LastName, savedDeskBooking.LastName);
             Assert.Equal(_request.Email, savedDeskBooking.Email);
             Assert.Equal(_request.Date, savedDeskBooking.Date);
+            Assert.Equal(_availableDesks.First().Id, savedDeskBooking.DeskId);
 
         }
 

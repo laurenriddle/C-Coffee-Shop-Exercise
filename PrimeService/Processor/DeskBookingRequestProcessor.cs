@@ -27,7 +27,10 @@ namespace PrimeService.Processor
 
             if (availableDesks.Count() > 0) 
             {
-            _deskBookingRepository.Save(Create<DeskBooking>(request));
+            var availableDesk = availableDesks.First();
+            var deskBooking = Create<DeskBooking>(request);
+            deskBooking.DeskId = availableDesk.Id;
+            _deskBookingRepository.Save(deskBooking);
             }
 
             return Create<DeskBookingResult>(request);
