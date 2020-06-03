@@ -92,6 +92,18 @@ namespace PrimeService.Tests
             _deskBookingRepositoryMock.Verify(x => x.Save(It.IsAny<DeskBooking>()), Times.Never);
 
         }
+
+        [Theory]
+        [InlineData(DeskBookingResultCode.Successs, true)]
+        [InlineData(DeskBookingResultCode.NoDeskAvailable, false)]
+        public void ShouldReturnExpectedResultCode(DeskBookingResultCode expectedResultCode, bool isDeskAvailable)
+        {
+        //Given
+        
+        //When
+        
+        //Then
+        }
     }
 }
 
