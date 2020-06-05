@@ -98,11 +98,38 @@ namespace PrimeService.Tests
         [InlineData(DeskBookingResultCode.NoDeskAvailable, false)]
         public void ShouldReturnExpectedResultCode(DeskBookingResultCode expectedResultCode, bool isDeskAvailable)
         {
-        //Given
+
+        if (!isDeskAvailable) {
+            _availableDesks.Clear();
+        }
+
+        var result = _processor.BookDesk(_request);
+
+        Assert.Equal(expectedResultCode, result.Code);
         
-        //When
+        }
+
+        [Theory]
+        [InlineData(5, true)]
+        [InlineData(null, false)]
+        public void ShouldReturnExpectedDeskBookingId(int? expectedDeskBookingId, bool isDeskAvailable)
+        {
+
+        if (!isDeskAvailable) {
+            _availableDesks.Clear();
+        } else
+        {
+            _deskBookingRepositoryMock.Setup( x => x.Save(It.IsAny<DeskBooking>()))
+            .Callback<DeskBooking>(deskbooking => 
+            {
+                deskbooking.Id = expectedDeskBookingId;
+            });
+        }
+
+        var result = _processor.BookDesk(_request);
         
-        //Then
+        Assert.Equal(expectedDeskBookingId, result.DeskBookingId);
+        
         }
     }
 }

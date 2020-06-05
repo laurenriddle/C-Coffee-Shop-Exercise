@@ -23,6 +23,7 @@ namespace PrimeService.Processor
                 throw new ArgumentNullException(nameof(request));
             }
 
+            var result = Create<DeskBookingResult>(request);
             var availableDesks = _deskRepository.GetAvailableDesks(request.Date);
 
             if (availableDesks.FirstOrDefault() is Desk availableDesk) 
@@ -30,9 +31,16 @@ namespace PrimeService.Processor
             var deskBooking = Create<DeskBooking>(request);
             deskBooking.DeskId = availableDesk.Id;
             _deskBookingRepository.Save(deskBooking);
+
+            result.DeskBookingId = deskBooking.Id;
+            result.Code = DeskBookingResultCode.Successs;
+            } 
+            else
+            {
+                result.Code = DeskBookingResultCode.NoDeskAvailable;
             }
 
-            return Create<DeskBookingResult>(request);
+            return result;
             
         }
 
