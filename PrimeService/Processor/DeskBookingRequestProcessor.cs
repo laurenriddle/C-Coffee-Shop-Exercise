@@ -31,8 +31,11 @@ namespace PrimeService.Processor
             var deskBooking = Create<DeskBooking>(request);
             deskBooking.DeskId = availableDesk.Id;
             _deskBookingRepository.Save(deskBooking);
+
+            result.DeskBookingId = deskBooking.Id;
             result.Code = DeskBookingResultCode.Successs;
-            } else
+            } 
+            else
             {
                 result.Code = DeskBookingResultCode.NoDeskAvailable;
             }
