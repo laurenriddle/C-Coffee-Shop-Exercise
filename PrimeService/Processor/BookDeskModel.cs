@@ -24,7 +24,11 @@ namespace PrimeService.Processor
             //     var result = _deskBookingRequestProcessor.BookDesk(DeskBookingRequest);
             //     if(result.Code == DeskBookingResultCode.Successs)
             //     {
-            //         actionResult = RedirectToPage();
+            //         actionResult = RedirectToPage("BookDeskConfirmation", new {
+            //     result.DeskBookingId,
+            //     result.FirstName,
+            //     result.Date
+            // });
             //     }
             //     else if (result.Code == DeskBookingResultCode.NoDeskAvailable)
             //     {
