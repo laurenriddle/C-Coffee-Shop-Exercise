@@ -16,16 +16,23 @@ namespace PrimeService.Processor
 
         public DeskBookingRequest DeskBookingRequest { get; set; }
 
-        // public IActionResult OnPost()
-        // {
-        //     // if (ModelState.IsValid)
-        //     // {
-        //     //     var result = _deskBookingRequestProcessor.BookDesk(DeskBookingRequest);
-        //     //     if (result.Code == DeskBookingResultCode.NoDeskAvailable)
-        //     //     {
-        //     //         ModelState.AddModelError("DeskBookingRequest.Date", "No desk available for selected date.");
-        //     //     }
-        //     // }
-        // }
+        public IActionResult OnPost()
+        {
+            // IActionResult actionResult = Page();
+            // if (ModelState.IsValid)
+            // {
+            //     var result = _deskBookingRequestProcessor.BookDesk(DeskBookingRequest);
+            //     if(result.Code == DeskBookingResultCode.Successs)
+            //     {
+            //         actionResult = RedirectToPage();
+            //     }
+            //     else if (result.Code == DeskBookingResultCode.NoDeskAvailable)
+            //     {
+            //         ModelState.AddModelError("DeskBookingRequest.Date", "No desk available for selected date.");
+            //     }
+            // }
+
+            return null;
+        }
     }
 }
