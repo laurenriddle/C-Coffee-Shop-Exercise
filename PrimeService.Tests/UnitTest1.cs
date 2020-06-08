@@ -222,6 +222,32 @@ namespace PrimeService.Tests
 
 
         // }
+
+        // [Theory]
+        // [InlineData(typeof(PageResult), false, null)]
+        // [InlineData(typeof(PageResult), true, DeskBookingResultCode.NoDeskAvailable)]
+        // [InlineData(typeof(RedirectToPageResult), true, DeskBookingResultCode.Successs)]
+        // public void ShouldReturnExpectedActionResult(Type expectedActionResultType, bool isModelValid, DeskBookingResultCode? DeskBookingResultCode)
+        // {
+        //     // Arrange
+        //     if(!isModelValid)
+        //     {
+        //         _bookDeskModel.ModelState.AddModelError("JustAKey", "AnErrorMessage");
+
+        //     }
+
+        //     if(DeskBookingResultCode.HasValue)
+        //     {
+        //         _deskBookingResult.Code = DeskBookingResultCode.Value;
+        //     }
+
+        //     // Act
+        //     IActionResult actionResult = _bookDeskModel.OnPost();
+
+
+        //     //Assert
+        //     Assert.IsType(expectedActionResultType, actionResult)
+        // }
     }
 }
 
