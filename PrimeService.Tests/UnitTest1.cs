@@ -141,6 +141,51 @@ namespace PrimeService.Tests
             Assert.Equal(expectedDeskBookingId, result.DeskBookingId);
 
         }
+
+        // [Fact]
+        // public void ShouldCallBookDeskMethodOfProcessor()
+        // {
+        //     var processorMock = new Mock<IDeskBookingRequestProcessor>();
+
+        //     var bookDeskModel = new BookDeskModel(processorMock.Object)
+        //     {
+        //         DeskBookingRequest = new DeskBookingRequest()
+        //     };
+
+        //     bookDeskModel.OnPost();
+
+        //     processorMock.Verify(x => x.BookDesk(bookDeskModel.DeskBookingRequest), Times.Once);
+
+
+        // }
+
+
+        // [Fact]
+        // public void ShouldAddModelErrorIfNoDeskIsAvailable()
+        // {
+        //     var processorMock = new Mock<IDeskBookingRequestProcessor>();
+
+        //     var bookDeskModel = new BookDeskModel(processorMock.Object)
+        //     {
+        //         DeskBookingRequest = new DeskBookingRequest()
+        //     };
+
+        //     processorMock.Setup(x => x.BookDesk(bookDeskModel.DeskBookingRequest))
+        //     .Returns(new DeskBookingResult 
+        //     {
+        //         Code = DeskBookingResultCode.NoDeskAvailable
+        //     });
+
+             
+        //     bookDeskModel.OnPost();
+
+        //     var modelStateEntry = Assert.Contains("DeskBookingRequest.Date", bookDeskModel.ModelState);
+
+        //     var modelError = Assert.Single(modelStateEntry.Errors);
+
+        //     Assert.Equal("No desk available for selected date.", modelError.ErrorMessage);
+
+        // }
     }
 }
 
