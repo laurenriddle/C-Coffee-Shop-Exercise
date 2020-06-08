@@ -16,6 +16,10 @@ namespace PrimeService.Tests
         private List<Desk> _availableDesks;
         private Mock<IDeskBookingRepository> _deskBookingRepositoryMock;
         private Mock<IDeskRepository> _deskRepositoryMock;
+        private DeskBookingResult _deskBookingResult;
+        private Mock<IDeskBookingRequestProcessor> _processorMock;
+        private BookDeskModel _bookDeskModel;
+        private int expectedBookDeskCalls;
 
         public DeskBookingRequestProcessorTests()
         {
@@ -40,6 +44,25 @@ namespace PrimeService.Tests
             _processor = new DeskBookingRequestProcessor(_deskBookingRepositoryMock.Object, _deskRepositoryMock.Object);
 
         }
+
+        // public BookDeskModelTests()
+        // {
+        //     _processorMock = new Mock<IDeskBookingRequestProcessor>();
+
+        //     _bookDeskModel = new BookDeskModel(_processorMock.Object)
+        //     {
+        //         DeskBookingRequest = new DeskBookingRequest()
+        //     };
+
+        //     _deskBookingResult = new DeskBookingResult
+        //     {
+        //         Code = DeskBookingResultCode.Successs
+        //     };
+
+
+        //     _processorMock.Setup(x => x.BookDesk(_bookDeskModel.DeskBookingRequest))
+        //     .Returns(_deskBookingResult);
+        // }
 
         [Fact]
         public void ShouldReturnDeskBookingResultsWithRequestValues()
@@ -69,7 +92,7 @@ namespace PrimeService.Tests
             DeskBooking savedDeskBooking = null;
             // checks to make sure this is a deskbooking 
             _deskBookingRepositoryMock.Setup(x => x.Save(It.IsAny<DeskBooking>()))
-        
+
             .Callback<DeskBooking>(deskBooking =>
             {
                 savedDeskBooking = deskBooking;
@@ -142,19 +165,30 @@ namespace PrimeService.Tests
 
         }
 
+        // [Theory]
+        // [InlineData(1, true)]
+        // [InlineData(0, false)]
+        // public void ShouldCallBookDeskMethodOfProcessorIfModelIsValid(int? expectedDeskBookingId, bool isModelValid)
+        // {
+        //     if(!isModelValid)
+        //     {
+        //         _bookDeskModel.ModelState.AddModelError("JustAKey", "AnErrorMessage")
+        //     }
+
+        //     _bookDeskModel.OnPost();
+
+        //     _processorMock.Verify(x => x.BookDesk(_bookDeskModel.DeskBookingRequest), Times.Exactly(expectedBookDeskCalls));
+
+
+        // }
+
         // [Fact]
         // public void ShouldCallBookDeskMethodOfProcessor()
         // {
-        //     var processorMock = new Mock<IDeskBookingRequestProcessor>();
+      
+        //     _bookDeskModel.OnPost();
 
-        //     var bookDeskModel = new BookDeskModel(processorMock.Object)
-        //     {
-        //         DeskBookingRequest = new DeskBookingRequest()
-        //     };
-
-        //     bookDeskModel.OnPost();
-
-        //     processorMock.Verify(x => x.BookDesk(bookDeskModel.DeskBookingRequest), Times.Once);
+        //     processorMock.Verify(x => x.BookDesk(_bookDeskModel.DeskBookingRequest), Times.Once);
 
 
         // }
@@ -163,27 +197,29 @@ namespace PrimeService.Tests
         // [Fact]
         // public void ShouldAddModelErrorIfNoDeskIsAvailable()
         // {
-        //     var processorMock = new Mock<IDeskBookingRequestProcessor>();
 
-        //     var bookDeskModel = new BookDeskModel(processorMock.Object)
-        //     {
-        //         DeskBookingRequest = new DeskBookingRequest()
-        //     };
+        //     _deskBookingResult.Code = DeskBookingResultCode.NoDeskAvailable;
 
-        //     processorMock.Setup(x => x.BookDesk(bookDeskModel.DeskBookingRequest))
-        //     .Returns(new DeskBookingResult 
-        //     {
-        //         Code = DeskBookingResultCode.NoDeskAvailable
-        //     });
+        //     _bookDeskModel.OnPost();
 
-             
-        //     bookDeskModel.OnPost();
-
-        //     var modelStateEntry = Assert.Contains("DeskBookingRequest.Date", bookDeskModel.ModelState);
+        //     var modelStateEntry = Assert.Contains("DeskBookingRequest.Date", _bookDeskModel.ModelState);
 
         //     var modelError = Assert.Single(modelStateEntry.Errors);
 
         //     Assert.Equal("No desk available for selected date.", modelError.ErrorMessage);
+
+        // }
+
+        // [Fact]
+        // public void ShouldNotAddModelErrorIfDeskIsAvailable()
+        // {
+        //      _deskBookingResult.Code = DeskBookingResultCode.NoDeskAvailable;
+
+
+        //     _bookDeskModel.OnPost();
+
+        //     Assert.DoesNotContain("DeskBookingRequest.Date", _bookDeskModel.ModelState);
+
 
         // }
     }
