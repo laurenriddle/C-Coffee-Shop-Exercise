@@ -248,6 +248,17 @@ namespace PrimeService.Tests
         //     //Assert
         //     Assert.IsType(expectedActionResultType, actionResult)
         // }
+
+
+        [Fact]
+        public void ShouldRedirectToBookDeskConfirmationPage()
+        {
+        //Given
+        
+        //When
+        
+        //Then
+        }
     }
 }
 
