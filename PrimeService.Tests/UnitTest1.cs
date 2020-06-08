@@ -168,8 +168,8 @@ namespace PrimeService.Tests
         // [Theory]
         // [InlineData(1, true)]
         // [InlineData(0, false)]
-        // public void ShouldCallBookDeskMethodOfProcessorIfModelIsValid(int? expectedDeskBookingId, bool isModelValid)
-        // {
+        public void ShouldCallBookDeskMethodOfProcessorIfModelIsValid(int? expectedDeskBookingId, bool isModelValid)
+        {
         //     if(!isModelValid)
         //     {
         //         _bookDeskModel.ModelState.AddModelError("JustAKey", "AnErrorMessage")
@@ -179,24 +179,22 @@ namespace PrimeService.Tests
 
         //     _processorMock.Verify(x => x.BookDesk(_bookDeskModel.DeskBookingRequest), Times.Exactly(expectedBookDeskCalls));
 
+        }
 
-        // }
-
-        // [Fact]
-        // public void ShouldCallBookDeskMethodOfProcessor()
-        // {
+        [Fact]
+        public void ShouldCallBookDeskMethodOfProcessor()
+        {
       
         //     _bookDeskModel.OnPost();
 
         //     processorMock.Verify(x => x.BookDesk(_bookDeskModel.DeskBookingRequest), Times.Once);
 
+        }
 
-        // }
 
-
-        // [Fact]
-        // public void ShouldAddModelErrorIfNoDeskIsAvailable()
-        // {
+        [Fact]
+        public void ShouldAddModelErrorIfNoDeskIsAvailable()
+        {
 
         //     _deskBookingResult.Code = DeskBookingResultCode.NoDeskAvailable;
 
@@ -221,43 +219,61 @@ namespace PrimeService.Tests
         //     Assert.DoesNotContain("DeskBookingRequest.Date", _bookDeskModel.ModelState);
 
 
-        // }
+        }
 
         // [Theory]
         // [InlineData(typeof(PageResult), false, null)]
         // [InlineData(typeof(PageResult), true, DeskBookingResultCode.NoDeskAvailable)]
         // [InlineData(typeof(RedirectToPageResult), true, DeskBookingResultCode.Successs)]
-        // public void ShouldReturnExpectedActionResult(Type expectedActionResultType, bool isModelValid, DeskBookingResultCode? DeskBookingResultCode)
-        // {
-        //     // Arrange
-        //     if(!isModelValid)
-        //     {
-        //         _bookDeskModel.ModelState.AddModelError("JustAKey", "AnErrorMessage");
+        public void ShouldReturnExpectedActionResult(Type expectedActionResultType, bool isModelValid, DeskBookingResultCode? DeskBookingResultCode)
+        {
+            // // Arrange
+            // if(!isModelValid)
+            // {
+            //     _bookDeskModel.ModelState.AddModelError("JustAKey", "AnErrorMessage");
 
-        //     }
+            // }
 
-        //     if(DeskBookingResultCode.HasValue)
-        //     {
-        //         _deskBookingResult.Code = DeskBookingResultCode.Value;
-        //     }
+            // if(DeskBookingResultCode.HasValue)
+            // {
+            //     _deskBookingResult.Code = DeskBookingResultCode.Value;
+            // }
 
-        //     // Act
-        //     IActionResult actionResult = _bookDeskModel.OnPost();
+            // // Act
+            // IActionResult actionResult = _bookDeskModel.OnPost();
 
 
-        //     //Assert
-        //     Assert.IsType(expectedActionResultType, actionResult)
-        // }
+            // //Assert
+            // Assert.IsType(expectedActionResultType, actionResult);
+        }
 
 
         [Fact]
         public void ShouldRedirectToBookDeskConfirmationPage()
         {
-        //Given
+        // //Given
+        // _deskBookingResult.Code = DeskBookingResultCode.Successs;
+        // _deskBookingResult.DeskBookingId = 7;
+        // _deskBookingResult.FirstName = "Lauren";
+        // _deskBookingResult.Date = new DateTime(2020, 1, 28);
+
+        // //When
+        // IActionResult actionResult = _bookDeskModel.OnPost();
         
-        //When
-        
-        //Then
+        // //Then
+        // var redirectToPageResult = Assert.IsType<RedirectToPageResult>(actionResult);
+        // Assert.Equal("BookDeskConfirmation", redirectToPageResult.PageName);
+
+        //    IDictionary<string, object> routeValues = redirectToPageResult.RouteValues;
+        //    Assert.Equal(3, routeValues.Count);
+        //    var deskBookingId = Assert.Contains("DeskBookingId", routeValues);
+        // Assert.Equal(_deskBookingResult.DeskBookingId, deskBookingId);
+
+        //    var firstName = Assert.Contains("FirstName", routeValues);
+        // Assert.Equal(_deskBookingResult.FirstName, firstName);
+
+        //    var date = Assert.Contains("Date", routeValues);
+        // Assert.Equal(_deskBookingResult.Date, date);
         }
     }
 }
