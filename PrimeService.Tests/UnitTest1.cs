@@ -19,29 +19,35 @@ namespace PrimeService.Tests
 
         public DeskBookingRequestProcessorTests()
         {
+            // Setup for the tests below
             _request = new DeskBookingRequest
             {
+                // instance of a desk booking request
                 FirstName = "Thomas",
                 LastName = "Huber",
                 Email = "thomas@thomas.com",
                 Date = new DateTime(2020, 1, 28)
             };
-            _availableDesks = new List<Desk>{ new Desk { Id = 7 } };
+            // list of available desks
+            _availableDesks = new List<Desk> { new Desk { Id = 7 } };
             _deskBookingRepositoryMock = new Mock<IDeskBookingRepository>();
             _deskRepositoryMock = new Mock<IDeskRepository>();
-            _deskRepositoryMock.Setup(x => x.GetAvailableDesks(_request.Date)) 
+
+            // retrieve the available desks for the requested date
+            _deskRepositoryMock.Setup(x => x.GetAvailableDesks(_request.Date))
             .Returns(_availableDesks);
 
             _processor = new DeskBookingRequestProcessor(_deskBookingRepositoryMock.Object, _deskRepositoryMock.Object);
-            
+
         }
 
         [Fact]
         public void ShouldReturnDeskBookingResultsWithRequestValues()
         {
-            
+            // books a desk
             DeskBookingResult result = _processor.BookDesk(_request);
 
+            // checks to make sure desk is booked
             Assert.NotNull(result);
             Assert.Equal(_request.FirstName, result.FirstName);
             Assert.Equal(_request.LastName, result.LastName);
@@ -51,7 +57,7 @@ namespace PrimeService.Tests
         [Fact]
         public void ShouldThrowExceptionIfRequestIsNull()
         {
-
+            // defines the exception when you pass in null instead of request. 
             var exception = Assert.Throws<ArgumentNullException>(() => _processor.BookDesk(null));
 
             Assert.Equal("request", exception.ParamName);
@@ -61,15 +67,16 @@ namespace PrimeService.Tests
         public void ShouldSaveDeskBooking()
         {
             DeskBooking savedDeskBooking = null;
+            // checks to make sure this is a deskbooking 
             _deskBookingRepositoryMock.Setup(x => x.Save(It.IsAny<DeskBooking>()))
-            
-            .Callback<DeskBooking>(deskBooking => 
+        
+            .Callback<DeskBooking>(deskBooking =>
             {
                 savedDeskBooking = deskBooking;
             });
 
             _processor.BookDesk(_request);
-
+            // verifies the saved object is a desk booking
             _deskBookingRepositoryMock.Verify(x => x.Save(It.IsAny<DeskBooking>()), Times.Once);
 
             Assert.NotNull(savedDeskBooking);
@@ -99,14 +106,15 @@ namespace PrimeService.Tests
         public void ShouldReturnExpectedResultCode(DeskBookingResultCode expectedResultCode, bool isDeskAvailable)
         {
 
-        if (!isDeskAvailable) {
-            _availableDesks.Clear();
-        }
+            if (!isDeskAvailable)
+            {
+                _availableDesks.Clear();
+            }
 
-        var result = _processor.BookDesk(_request);
+            var result = _processor.BookDesk(_request);
 
-        Assert.Equal(expectedResultCode, result.Code);
-        
+            Assert.Equal(expectedResultCode, result.Code);
+
         }
 
         [Theory]
@@ -115,21 +123,23 @@ namespace PrimeService.Tests
         public void ShouldReturnExpectedDeskBookingId(int? expectedDeskBookingId, bool isDeskAvailable)
         {
 
-        if (!isDeskAvailable) {
-            _availableDesks.Clear();
-        } else
-        {
-            _deskBookingRepositoryMock.Setup( x => x.Save(It.IsAny<DeskBooking>()))
-            .Callback<DeskBooking>(deskbooking => 
+            if (!isDeskAvailable)
             {
-                deskbooking.Id = expectedDeskBookingId;
-            });
-        }
+                _availableDesks.Clear();
+            }
+            else
+            {
+                _deskBookingRepositoryMock.Setup(x => x.Save(It.IsAny<DeskBooking>()))
+                .Callback<DeskBooking>(deskbooking =>
+                {
+                    deskbooking.Id = expectedDeskBookingId;
+                });
+            }
 
-        var result = _processor.BookDesk(_request);
-        
-        Assert.Equal(expectedDeskBookingId, result.DeskBookingId);
-        
+            var result = _processor.BookDesk(_request);
+
+            Assert.Equal(expectedDeskBookingId, result.DeskBookingId);
+
         }
     }
 }
