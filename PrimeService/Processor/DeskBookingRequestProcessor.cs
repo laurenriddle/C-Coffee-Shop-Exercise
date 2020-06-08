@@ -5,7 +5,7 @@ using PrimeService.Domain;
 
 namespace PrimeService.Processor
 {
-    public class DeskBookingRequestProcessor
+    public class DeskBookingRequestProcessor : IDeskBookingRequestProcessor
     {
         private readonly IDeskBookingRepository _deskBookingRepository;
         private readonly IDeskRepository _deskRepository;
@@ -26,22 +26,22 @@ namespace PrimeService.Processor
             var result = Create<DeskBookingResult>(request);
             var availableDesks = _deskRepository.GetAvailableDesks(request.Date);
 
-            if (availableDesks.FirstOrDefault() is Desk availableDesk) 
+            if (availableDesks.FirstOrDefault() is Desk availableDesk)
             {
-            var deskBooking = Create<DeskBooking>(request);
-            deskBooking.DeskId = availableDesk.Id;
-            _deskBookingRepository.Save(deskBooking);
+                var deskBooking = Create<DeskBooking>(request);
+                deskBooking.DeskId = availableDesk.Id;
+                _deskBookingRepository.Save(deskBooking);
 
-            result.DeskBookingId = deskBooking.Id;
-            result.Code = DeskBookingResultCode.Successs;
-            } 
+                result.DeskBookingId = deskBooking.Id;
+                result.Code = DeskBookingResultCode.Successs;
+            }
             else
             {
                 result.Code = DeskBookingResultCode.NoDeskAvailable;
             }
 
             return result;
-            
+
         }
 
         private static T Create<T>(DeskBookingRequest request) where T : DeskBookingBase, new()
